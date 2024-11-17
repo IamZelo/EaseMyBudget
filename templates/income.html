@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Expense
+{% endblock %}
+
+{% block main %}
+<div class="d-flex-column justify-content-center align-items-center">
+
+    <div class="p-2 fs-1 fw-semibold"><h1>Add Income</h1></div>
+
+    <div class="p-2">
+        <form action="/income" method="post">
+            <div class="card ms-auto me-auto" style="max-width:60%" >
+                <div class="card-body">
+                      
+                    <div class="form-floating mb-3">
+                        <input type="Text" class="form-control" placeholder="Describe about the expense" name="description" required>
+                        <label for="floatingInput">Description</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="numeric" class="form-control" name="amount" placeholder="Enter amount" min="1" required>
+                                <label for="floatingInput">Amount</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-dark px-5 py-3">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

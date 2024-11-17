@@ -1,0 +1,42 @@
+{% block body %}
+<script type="text/javascript">
+window.onload = function () {
+var chart = new CanvasJS.Chart("chartContainer",
+{
+    title:{
+    text: "Summary",
+    fontFamily: "Impact",
+    fontWeight: "normal"
+    },
+
+    legend:{
+    fontFamily: "Calibri",
+    verticalAlign: "center",
+    horizontalAlign: "center"
+    },
+    data: [
+    {
+    //startAngle: 45,
+    indexLabelFontSize: 20,
+    indexLabelFontFamily: "Garamond",
+    indexLabelFontColor: "darkgrey",
+    indexLabelLineColor: "darkgrey",
+    indexLabelPlacement: "outside",
+    type: "doughnut",
+    showInLegend: true,
+    dataPoints: [
+    {  y: 53.37, legendText:"Android 53%"},
+    {  y: 35.0, legendText:"iOS 35%"},
+    {  y: 7, legendText:"Blackberry 7%"},
+    {  y: 2, legendText:"Windows 2%"},
+    {  y: 5, legendText:"Others 5%"}
+    ]
+    }
+    ]
+});
+
+chart.render();
+}
+</script>
+<script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+{% endblock %}

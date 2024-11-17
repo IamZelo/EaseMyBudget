@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="d-flex-column p-2" id="index">
+
+    <div class="p-2 fs-1 fw-semibold"><h1>Dashboard</h1></div>
+    <div class="p-2">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly-tab-pane" type="button" role="tab" aria-controls="weekly-tab-pane" aria-selected="true">Last 7 days</button>
+            </li>
+            <li class="nav-item " role="presentation">
+              <button class="nav-link" id="Monthly-tab" data-bs-toggle="tab" data-bs-target="#Monthly-tab-pane" type="button" role="tab" aria-controls="Monthly-tab-pane" aria-selected="false">Last 30 days</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="halfyearly-tab" data-bs-toggle="tab" data-bs-target="#halfyearly-tab-pane" type="button" role="tab" aria-controls="halfyearly-tab-pane" aria-selected="false">Last 6 months</button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="weekly-tab-pane" role="tabpanel" aria-labelledby="weekly-tab" tabindex="0">{% include "sub_index/weekly.html" %}</div>
+            <div class="tab-pane fade" id="Monthly-tab-pane" role="tabpanel" aria-labelledby="Monthly-tab" tabindex="0">{% include "sub_index/monthly.html" %}</div>
+            <div class="tab-pane fade" id="halfyearly-tab-pane" role="tabpanel" aria-labelledby="halfyearly-tab" tabindex="0">{% include "sub_index/halfyearly.html" %}</div>
+          </div>
+          
+              
+    </div>
+
+</div>
+{% endblock %}

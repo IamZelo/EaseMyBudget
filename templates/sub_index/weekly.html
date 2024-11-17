@@ -1,0 +1,170 @@
+{% block daily %}
+<div class="d-flex flex-column mb-3">
+  <!--Top level content -->
+  <div class="p-2">
+    <div class="d-flex flex-wrap flex-row mb-3">
+      <!--Card Body-->
+      <div class="p-2", style="width:50%">
+        {% for expense_row in weekly['category_expense'] | batch(3)%}
+          <div class="d-flex flex-wrap flex-column mb-1 text-start">
+            <div class="p-2">
+              <div class="d-flex flex-wrap flex-row mb-1">
+                {% for expense in expense_row%}
+                  <div class="p-2">
+                    <div class="card text-bg-dark" style="width:180px;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{expense["category"]}}</h5>
+                        <p class="card-text">{{expense["amount"] | inr}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="p-2 flex-fill text-start ms-1">
+        <p class="fs-3 mb-1">Summary</p>
+        <table class="table table-sm">
+          <tbody class="table-group-divider">
+            {% for expense in weekly['category_expense'] %}  
+            <tr>
+              <td>{{expense["category"]}}</td>
+              <td>{{expense["amount"] | inr}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="text-end pe-3">Expense:</th>
+              <th class="text-start">{{weekly['expense_sum'] | inr}}</th>
+            </tr>
+            <tr>
+              <th class="text-end pe-3">Income:</th>
+              <th class="text-start">{{weekly['income_sum'] | inr}}</th>
+            </tr>
+            <tr>
+              <th class="text-end pe-3">Total:</th>
+              <th class="text-start">{{(weekly['income_sum'] - weekly['expense_sum']) | inr}}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!--Graph-->
+  <div class="p-2 text-start">
+    <div class="d-flex flex-wrap justify-content-start flex-row mb-3">
+      <div class="radar-container-main p-2 text-start">
+        <div>
+          <canvas id="summaryDoughnut"></canvas>
+        </div>
+      </div>
+      <div class="bar-chart-container p-2 text-start">
+        <div>
+          <canvas id="weeklyHistogram"></canvas>
+        </div>        
+      </div>
+    </div>
+  </div>
+
+
+  <!--Bottom level content-->
+  <div class="p-2 text-start">
+    
+      <table class="table ">
+        <thead>
+          <tr class="table-dark">
+            <th scope="col">#</th>
+            <th scope="col">Description</th>
+            <th scope="col">Category</th>
+            <th scope="col" class="text-start">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          {% for date in transaction_statment%}
+          <tr>
+            <td class="py-0 fs-6 fw-light table-secondary" colspan="4">{{date | formatDate}}</td>
+          </tr>
+          {%for item in transaction_statment[date] %}
+          <tr>
+            <th></th>
+            <td>{{item["description"]}}</td>
+            <td>{{item["category"]}}</td>
+            <td class="text-start">{{item["amount"] | inr}}</td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById('summaryDoughnut');
+  const values = [];
+
+  new Chart(ctx, {
+  type:"radar",
+  data:{
+    labels: {{weekly['category_lst'] | tojson}},
+    datasets: [{
+      label: 'Amount spent',
+      data: {{weekly['category_amt'] | tojson}},
+      fill: true,
+      backgroundColor: 'rgba(108, 117, 125, 0.2)',
+      borderColor: '#6c757d',
+      pointBackgroundColor: 'rgb(33, 37, 41)',
+      pointBorderColor: 'rgb(33, 37, 41)',
+      pointHoverBackgroundColor: 'rgb(255,255,255)',
+      pointHoverBorderColor: 'rgb(33, 37, 41)'
+    }]
+    },
+  options: {
+    scale: {
+      ticks: {
+          beginAtZero: true,
+          max: 1000000,
+          min: 0,
+          stepSize: 2000
+      }
+  },
+    elements: {
+      line: {
+        borderWidth: 2
+      }
+    }
+  },
+  });
+</script>
+<script>
+  const hist = document.getElementById('weeklyHistogram');
+
+  new Chart(hist, {
+    type: 'bar',
+    data: {
+      labels: {{weekly['expense_history_day'] | tojson}},
+      datasets: [{
+        label: 'Amount spent',
+        data: {{weekly['expense_history_amt'] | tojson}},
+        backgroundColor:[
+      '#212529',
+      ],
+      barThickness: "flex",
+      maxBarThickness: 40,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+:root {
+  --bs-body-font-family: 'Roboto', sans-serif
+}
+#apology-box{
+  display: flex !important;
+  align-items: center;
+  justify-content: start !important;
+  height: 80vh;
+}
+.nav .nav-link{
+  color:#6c757d;
+}
+.radar-container-main{
+  flex: 0 0 auto;
+  width: 450px;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 0 10px;
+}
+.bar-chart-container{
+  flex: 0 0 auto;
+  width: 750px;
+  max-width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 0 10px;
+}

@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+<div class="d-flex justify-content-center align-items-center" style="margin-top: 10%;">
+    <div class="card flex-grow-1" style="max-width: 400px;">
+        <div class="card-header fs-3 fw-bold">
+          Register
+        </div>
+        <div class="card-body text-start">
+            <form action="/register" method="post">
+                
+                <div class="mb-3">
+                    <label class="form-label">Email address</label>
+                    <input name="email" type="email" class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input name="password" type="password" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input name="confirmation" type="password" class="form-control">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer fs-6 text-start">
+            <a href="/register" class="link-secondary">Don't have an account yet?</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

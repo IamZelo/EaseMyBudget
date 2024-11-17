@@ -1,0 +1,73 @@
+{% block daily %}
+<div class="d-flex flex-column mb-3">
+  <!--Top level content -->
+  <div class="p-2">
+    <div class="d-flex flex-row justify-content-start mb-3">
+      <!--Card Body-->
+      <div class="p-2">
+        {% for expense_row in monthly['category_expense'] | batch(3)%}
+          <div class="d-flex flex-column mb-1 text-start">
+            <div class="p-2">
+              <div class="d-flex flex-row mb-1">
+                {% for expense in expense_row%}
+                  <div class="p-2">
+                    <div class="card" style="width: 200px;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{expense["category"]}}</h5>
+                        <p class="card-text">{{expense["amount"]}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="p-2 w-100 text-start ms-5">
+        <p class="fs-3 mb-1">Summary</p>
+        <table class="table table-sm">
+          <tbody class="table-group-divider">
+            {% for expense in monthly['category_expense'] %}  
+            <tr>
+              <td>{{expense["category"]}}</td>
+              <td>{{expense["amount"]}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <th class="text-end pe-3">Total:</th>
+              <th class="text-start">{{monthly["sum_expense"]}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!--Bottom level content-->
+  <div class="p-2">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Date Time</th>
+          <th scope="col">Description</th>
+          <th scope="col">Category</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in monthly['expense_statement'] %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{item["date_time"]}}</td>
+          <td>{{item["description"]}}</td>
+          <td>{{item["category"]}}</td>
+          <td>{{item["amount"]}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
