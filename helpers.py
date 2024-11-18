@@ -1,3 +1,5 @@
+import datetime
+from operator import itemgetter
 from flask import redirect, session, render_template
 from functools import wraps
 from cs50 import SQL
@@ -93,7 +95,31 @@ def get_expense(id,day):
         for item in expense_history:
             expense_history_day.append(item['weekday'])
             expense_history_amt.append(item['amount'])
-       
+    elif day == 30:
+        expense_history = db.execute(f"""SELECT STRFTIME('%d/%m',date_time) as date, STRFTIME('%Y%m%d', date_time) as cmpdate, SUM(amount) AS amount
+                                     FROM expenses WHERE user_id = ? AND DATE(date_time) > DATE(DATE(), '-{day} day') 
+                                     GROUP BY DATE(date_time) 
+                                     ORDER BY date_time;""", id)
+        num_of_dates = day
+        start = datetime.datetime.today()
+        date_list = [(start.date() - datetime.timedelta(days=x)).strftime("%Y%m%d") for x in range(num_of_dates)]
+        for item in expense_history:
+            date_list.remove(item['cmpdate'])
+        for item in date_list:
+            expense_history.append({'date':item[6:]+'/'+ item[4:6], "cmpdate":item, 'amount':0})
+        print(expense_history)
+        sorted_expense_history = sorted(expense_history, key=itemgetter('cmpdate'))
+            
+        for item in sorted_expense_history:
+            expense_history_day.append(item['date'])
+            expense_history_amt.append(item['amount'])
+
+    
+    # day_dic= {'Sun':0,'Mon':1, 'Tue':2, 'Wed':3, 'Thu':4, 'Fri':5, 'Sat':6}
+    # for item in expense_history:
+    #     day_dic.pop(item['weekday'])
+    # for item in day_dic:
+    #     expense_history.insert(day_dic[item],{'weekday':item, 'amount':0})
     # expense_dict = {}
     # for item in expense_list:
     #     if item["date"] in expense_dict:
@@ -107,11 +133,10 @@ def get_expense(id,day):
         category_lst.append(item['category'])
         category_amt.append(item['amount'])
         
-        
     return {"expense_list":expense_list, "expense_sum":expense_sum, "category_expense":category_expense, "category_lst":category_lst, "category_amt":category_amt, "expense_history_day":expense_history_day, "expense_history_amt":expense_history_amt}
 
 def get_income(id,day):
-    income_list = db.execute(f"""SELECT date_time, DATE(date_time) as date, description, category, amount, SUM(amount) AS sum_amount
+    income_list = db.execute(f"""SELECT date_time, DATE(date_time) as date, description, category, amount
                                     FROM income 
                                     WHERE user_id = ? AND DATE(date_time) > DATE(DATE(), '-{day} day') 
                                     ORDER BY date_time DESC""", id)

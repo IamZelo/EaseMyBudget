@@ -117,9 +117,15 @@ def index():
     halfyearly_expense = get_expense(id, 180)
     
     weekly_income = get_income(id,7)
+    monthly_income = get_income(id,30)
 
-    transaction_statment_dict = get_transaction_statment(weekly_expense["expense_list"], weekly_income["income_list"])
-    return render_template("index.html", transaction_statment=transaction_statment_dict, weekly = weekly_expense|weekly_income, monthly = monthly_expense, halfyearly=halfyearly_expense)
+    weekly_transaction_statment = get_transaction_statment(weekly_expense["expense_list"], weekly_income["income_list"])
+    monthly_transaction_statment = get_transaction_statment(monthly_expense["expense_list"], monthly_income["income_list"])
+    return render_template("index.html", weekly_transaction_statment=weekly_transaction_statment,
+                           monthly_transaction_statment=monthly_transaction_statment,
+                           weekly = weekly_expense|weekly_income,
+                           monthly = monthly_expense|monthly_income,
+                           halfyearly=halfyearly_expense)
 
 
 @app.route("/expense", methods=["GET", "POST"])

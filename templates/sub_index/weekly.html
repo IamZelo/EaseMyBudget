@@ -84,11 +84,11 @@
           </tr>
         </thead>
         <tbody class="table-group-divider">
-          {% for date in transaction_statment%}
+          {% for date in weekly_transaction_statment%}
           <tr>
             <td class="py-0 fs-6 fw-light table-secondary" colspan="4">{{date | formatDate}}</td>
           </tr>
-          {%for item in transaction_statment[date] %}
+          {%for item in weekly_transaction_statment[date] %}
           <tr>
             <th></th>
             <td>{{item["description"]}}</td>
