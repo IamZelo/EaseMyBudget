@@ -118,14 +118,17 @@ def index():
     
     weekly_income = get_income(id,7)
     monthly_income = get_income(id,30)
+    halfyearly_income= get_income(id, 180)
 
     weekly_transaction_statment = get_transaction_statment(weekly_expense["expense_list"], weekly_income["income_list"])
     monthly_transaction_statment = get_transaction_statment(monthly_expense["expense_list"], monthly_income["income_list"])
+    halfyearly_transaction_statment = get_transaction_statment(halfyearly_expense["expense_list"], halfyearly_income["income_list"])
     return render_template("index.html", weekly_transaction_statment=weekly_transaction_statment,
                            monthly_transaction_statment=monthly_transaction_statment,
+                           halfyearly_transaction_statment=halfyearly_transaction_statment,
                            weekly = weekly_expense|weekly_income,
                            monthly = monthly_expense|monthly_income,
-                           halfyearly=halfyearly_expense)
+                           halfyearly=halfyearly_expense|halfyearly_income)
 
 
 @app.route("/expense", methods=["GET", "POST"])
@@ -146,9 +149,12 @@ def expense():
         # Perform input validation
         if not description:
             return apology("Please enter description")
-        if not amount.isnumeric():
+        try:
+            amount = amount.replace(",", "")
+            amount = float(amount)
+        except ValueError:
             return apology("Amount must be Numeric only")
-        amount = float(amount)
+        
         if amount < 0:
             return apology("Amount must be non negative!")
         if category not in categories:

@@ -107,7 +107,6 @@ def get_expense(id,day):
             date_list.remove(item['cmpdate'])
         for item in date_list:
             expense_history.append({'date':item[6:]+'/'+ item[4:6], "cmpdate":item, 'amount':0})
-        print(expense_history)
         sorted_expense_history = sorted(expense_history, key=itemgetter('cmpdate'))
             
         for item in sorted_expense_history:
@@ -126,6 +125,34 @@ def get_expense(id,day):
     #         expense_dict[item["date"]].append(item)
     #     else:
     #         expense_dict[item["date"]]= [item,]
+    elif day == 180:
+        expense_history = db.execute(f"""SELECT STRFTIME('%m',date_time) as month, SUM(amount) AS amount
+                                        FROM expenses WHERE user_id = ? AND DATE(date_time) > DATE(DATE(), '-{day} day') 
+                                        GROUP BY month
+                                        ORDER BY month;""", id)
+        if expense_history:
+            month_dict = {1:'Jan', 2:'Feb', 3:'March', 4:'April', 5:'May', 6:'June', 7:'July', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 1:'Dec'}
+            month_dict_new = month_dict.copy()
+            for item in expense_history:
+                month_dict_new.pop(int(item['month']))
+            
+            delta_month = int(expense_history[-1]['month'])- 6
+            if delta_month < 0:
+                delta_month += 12
+                
+            for item in expense_history:
+                item['month'] = month_dict[int(item['month'])]
+                
+            temp = []
+            for item in month_dict_new:
+                if item >= delta_month:
+                    temp.append({'month':month_dict_new[item], 'amount':0})
+            temp.extend(expense_history)
+            sorted_expense_history = temp
+            
+            for item in sorted_expense_history:
+                expense_history_day.append(item['month'])
+                expense_history_amt.append(item['amount'])
         
     category_lst = []
     category_amt = []
