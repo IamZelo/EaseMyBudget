@@ -103,8 +103,12 @@ def get_expense(id,day):
         num_of_dates = day
         start = datetime.datetime.today()
         date_list = [(start.date() - datetime.timedelta(days=x)).strftime("%Y%m%d") for x in range(num_of_dates)]
+        print(date_list)
         for item in expense_history:
-            date_list.remove(item['cmpdate'])
+            try:
+                date_list.remove(item['cmpdate'])
+            except ValueError:
+                pass
         for item in date_list:
             expense_history.append({'date':item[6:]+'/'+ item[4:6], "cmpdate":item, 'amount':0})
         sorted_expense_history = sorted(expense_history, key=itemgetter('cmpdate'))
@@ -131,7 +135,7 @@ def get_expense(id,day):
                                         GROUP BY month
                                         ORDER BY month;""", id)
         if expense_history:
-            month_dict = {1:'Jan', 2:'Feb', 3:'March', 4:'April', 5:'May', 6:'June', 7:'July', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 1:'Dec'}
+            month_dict = {1:'Jan', 2:'Feb', 3:'March', 4:'April', 5:'May', 6:'June', 7:'July', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec'}
             month_dict_new = month_dict.copy()
             for item in expense_history:
                 month_dict_new.pop(int(item['month']))
