@@ -48,7 +48,7 @@ def login():
             return apology("must provide username", 403)
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
+        if not request.form.get("password"):
             return apology("must provide password", 403)
 
         # Query database for username
@@ -111,7 +111,6 @@ def register():
 def index():
     """Show Dashboard"""
     id = session["user_id"]
-    #Last 7Days
     weekly_expense = get_expense(id, 7)
     monthly_expense = get_expense(id, 30)
     halfyearly_expense = get_expense(id, 180)
@@ -169,6 +168,7 @@ def expense():
 @app.route("/income", methods=["GET", "POST"])
 @login_required
 def income():
+    """Show income form"""
     if request.method == "POST":
         id  = session["user_id"]
         description = request.form.get("description")

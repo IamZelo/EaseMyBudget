@@ -103,7 +103,6 @@ def get_expense(id,day):
         num_of_dates = day
         start = datetime.datetime.today()
         date_list = [(start.date() - datetime.timedelta(days=x)).strftime("%Y%m%d") for x in range(num_of_dates)]
-        print(date_list)
         for item in expense_history:
             try:
                 date_list.remove(item['cmpdate'])
@@ -117,18 +116,6 @@ def get_expense(id,day):
             expense_history_day.append(item['date'])
             expense_history_amt.append(item['amount'])
 
-    
-    # day_dic= {'Sun':0,'Mon':1, 'Tue':2, 'Wed':3, 'Thu':4, 'Fri':5, 'Sat':6}
-    # for item in expense_history:
-    #     day_dic.pop(item['weekday'])
-    # for item in day_dic:
-    #     expense_history.insert(day_dic[item],{'weekday':item, 'amount':0})
-    # expense_dict = {}
-    # for item in expense_list:
-    #     if item["date"] in expense_dict:
-    #         expense_dict[item["date"]].append(item)
-    #     else:
-    #         expense_dict[item["date"]]= [item,]
     elif day == 180:
         expense_history = db.execute(f"""SELECT STRFTIME('%m',date_time) as month, SUM(amount) AS amount
                                         FROM expenses WHERE user_id = ? AND DATE(date_time) > DATE(DATE(), '-{day} day') 
