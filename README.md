@@ -1,5 +1,5 @@
 # EaseMyBudget
-### Video Demo:  [<URL HERE>](https://youtu.be/wQQvlN2yxug)
+### Video Demo:<https://youtu.be/wQQvlN2yxug>
 ## Description:
 EaseMyBudget is a web-app developed with combination of Python, Sqlite3, Flask framework, HTML, CSS and JavaScript. As an undergrad student I have hard time keeping track of my expenses and income. With the help of CS50 course, I developed this app to keep track of expenses. 
 >It helps you understand your spending habits, identify areas where you can cut back, set financial goals, and ultimately make informed decisions about your money by providing a clear picture of where your income is going across different categories of expenses.
